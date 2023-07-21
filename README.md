@@ -2,7 +2,7 @@
     <img src="assets/forest.png" width="700" alt="Storm with lightning and red cross">
     <h1>Object store</h1>
     <p>
-        <b>Minimal API Based object store</b>
+        <b>Minimal API-based object store</b>
     </p>
     <br>
     <br>
