@@ -10,8 +10,10 @@
 	},
 	"devDependencies": {
 		"@types/koa": "^2.13.6",
+		"@types/koa__cors": "^4.0.0",
 		"@types/koa__multer": "^2.0.4",
 		"@types/koa__router": "^12.0.0",
+		"@types/minimist": "^1.2.2",
 		"@types/node": "^20.4.2",
 		"@typescript-eslint/eslint-plugin": "^6.0.0",
 		"@typescript-eslint/parser": "^6.0.0",
@@ -20,10 +22,12 @@
 		"typescript": "^5.1.6"
 	},
 	"dependencies": {
+		"@koa/cors": "^4.0.0",
 		"@koa/multer": "^3.0.2",
 		"@koa/router": "^12.0.0",
 		"@prisma/client": "^5.0.0",
 		"koa": "^2.14.2",
+		"minimist": "^1.2.8",
 		"prisma": "^5.0.0"
 	}
 }

@@ -106,6 +106,12 @@ npm start
 
 The API will listen on port `12543` by default.
 
+To run with CORS enabled for a domain, run:
+
+```
+npm start -- --cors http://example.com
+```
+
 ## License
 
 This project is licensed under the MIT License. See the `LICENSE` file for

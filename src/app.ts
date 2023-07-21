@@ -6,6 +6,10 @@ import Koa from "koa"
 import { dirname, join, normalize, resolve } from "path"
 import { cwd } from "process"
 import { createLink, getToken, resolveLink } from "./db.js"
+import cors from "@koa/cors"
+
+import minimist from "minimist"
+const { cors: corsOrigin } = minimist(process.argv.slice(2), { string: "cors" })
 
 const bucketDir = join(cwd(), "buckets")
 await mkdir(bucketDir, { recursive: true })
@@ -16,6 +20,12 @@ console.info(`Your authenticaten token is: ${token}`)
 console.info(`Buckets: ${bucketDir}`)
 
 const app = new Koa()
+
+if (cors && typeof corsOrigin === "string") {
+	console.log(cors)
+	app.use(cors({ origin: corsOrigin }))
+}
+
 const router = new Router()
 const upload = multer()
 
