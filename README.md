@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="assets/forest.png" width="700" alt="Storm with lightning and red cross">
+    <img src="assets/forest.png" width="700" alt="Autumn forest scene with boxes stacked on side of river and sunlight breaking through leaves">
     <h1>Object store</h1>
     <p>
         <b>Minimal API-based object store</b>
@@ -8,6 +8,21 @@
     <br>
     <br>
 </div>
+
+# API
+
+-   [`GET /auth`](#get-auth)
+-   [Buckets](#buckets)
+    -   [`GET /buckets`](#get-buckets)
+    -   [`PUT /buckets/:bucket`](#put-bucketsbucket)
+    -   [`DELETE /buckets/:bucket`](#delete-bucketsbucket)
+-   [Objects](#objects)
+    -   [`GET /list/:bucket`](#get-listbucket)
+    -   [`GET /object/:bucket/:object`](#get-objectbucketobject)
+    -   [`DELETE /object/:bucket/:object`](#delete-objectbucketobject)
+    -   [`POST /object/:bucket/:object`](#post-objectbucketobject)
+    -   [`PATCH /object/:bucket/:object`](#patch-objectbucketobject)
+-   [`GET /shared/:id`](#get-sharedid)
 
 ## Authentication
 
@@ -61,6 +76,14 @@ Deletes the specified object.
 
 Creates or updates the specified object. The request body should contain the
 contents of the object. If the object already exists, it will be overwritten.
+
+### `PATCH /object/:bucket/:object`
+
+Creates a shareable link for an object.
+
+## `GET /shared/:id`
+
+Downloads the file associated with the specified shareable link.
 
 ## Error Codes
 

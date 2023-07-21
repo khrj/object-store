@@ -1,20 +1,16 @@
 import multer from "@koa/multer"
 import Router from "@koa/router"
-import { randomBytes } from "crypto"
 import { createReadStream } from "fs"
-import { mkdir, readFile, readdir, rm, stat, writeFile } from "fs/promises"
+import { mkdir, readdir, rm, stat, writeFile } from "fs/promises"
 import Koa from "koa"
 import { dirname, join, normalize, resolve } from "path"
 import { cwd } from "process"
+import { createLink, getToken, resolveLink } from "./db.js"
 
 const bucketDir = join(cwd(), "buckets")
 await mkdir(bucketDir, { recursive: true })
 
-const token = await readFile(".auth", "utf8").catch(async () => {
-	const token = randomBytes(100).toString("hex")
-	await writeFile(".auth", token)
-	return token
-})
+const token = await getToken()
 
 console.info(`Your authenticaten token is: ${token}`)
 console.info(`Buckets: ${bucketDir}`)
@@ -22,6 +18,20 @@ console.info(`Buckets: ${bucketDir}`)
 const app = new Koa()
 const router = new Router()
 const upload = multer()
+
+router.get("/shared/:id", async ctx => {
+	const { filePath } = await resolveLink(ctx.params.id)
+
+	const stats = await stat(filePath)
+
+	if (stats.isFile()) {
+		ctx.attachment(filePath)
+		ctx.status = 200
+		ctx.body = createReadStream(filePath)
+	} else {
+		ctx.status = 404
+	}
+})
 
 // Auth check
 router.use(async (ctx, next) => {
@@ -149,7 +159,7 @@ router.delete("/object/:bucket/:object", async ctx => {
 })
 
 router.post("/object/:bucket/:object", upload.single(), async ctx => {
-	const objectPath = join(bucketDir, ctx.params.object)
+	const objectPath = join(bucketDir, ctx.params.bucket, ctx.params.object)
 
 	if (!ctx.request.file) {
 		ctx.status = 400
@@ -169,6 +179,28 @@ router.post("/object/:bucket/:object", upload.single(), async ctx => {
 		ctx.status = 201
 	} catch (error) {
 		ctx.status = 500
+	}
+})
+
+router.patch("/object/:bucket/:object", async ctx => {
+	const objectPath = join(bucketDir, ctx.params.bucket, ctx.params.object)
+
+	if (transversal(bucketDir, objectPath)) {
+		ctx.status = 403
+		return
+	}
+
+	try {
+		const stats = await stat(objectPath)
+
+		if (stats.isFile()) {
+			const id = await createLink(objectPath)
+			ctx.body = `${ctx.URL.origin}/shared/${id.content}`
+		} else {
+			ctx.status = 404
+		}
+	} catch (error) {
+		ctx.status = 404
 	}
 })
 

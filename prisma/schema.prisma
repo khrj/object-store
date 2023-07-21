@@ -1,0 +1,23 @@
+datasource db {
+    provider = "sqlite"
+    url      = "file:./object-store.db"
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model file {
+    path  String @id
+    links link[]
+}
+
+model link {
+    content  String @id
+    file     file   @relation(fields: [filePath], references: [path])
+    filePath String
+}
+
+model token {
+    content String @id
+}
