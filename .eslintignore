@@ -1,0 +1,8 @@
+.direnv/
+build/
+node_modules/
+.env
+.cache
+
+.auth
+buckets/
