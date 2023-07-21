@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="assets/forest.png" width="700" alt="Autumn forest scene with boxes stacked on side of river and sunlight breaking through leaves">
+    <img src="assets/forest.png" width="500" alt="Autumn forest scene with boxes stacked on side of river and sunlight breaking through leaves">
     <h1>Object store</h1>
     <p>
         <b>Minimal API-based object store</b>
